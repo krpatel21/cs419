@@ -3,24 +3,6 @@
 import os, os.path
 import sys
 
-# figure out if review is positive
-def isPos (text):
-    words = text.split(" ")
-    # return words
-    for word in words:
-        if word == ("good" or "excellent" or "great" or "amazing"):
-            return True
-    return False
-
-# figure out if review is negative
-def isNeg (text):
-    words = text.split(" ")
-    # return words
-    for word in words:
-        if word == ("bad" or "disappointing" or "disappointment" or "horrible" or "sad"):
-            return True
-    return False
-
 def isGood(text):
     words = text.split(" ")
     bad_words = 0
