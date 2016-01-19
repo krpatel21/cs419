@@ -8,9 +8,10 @@ def isGood(text):
     bad_words = 0
     good_words = 0
     for word in words:
-        if word == ("good" or "excellent" or "great" or "amazing"):
+        if word == ("good" or "excellent" or "great" or "amazing" or "like" or "love"):
             good_words = good_words + 1
-        if word == ("bad" or "disappointing" or "disappointment" or "horrible" or "sad"):
+        if word == ("bad" or "disappointing" or "disappointment" or "disappoint" or
+                        "horrible" or "sad" or "suck" or "hate"):
             bad_words = bad_words + 1
     return good_words > bad_words
 
