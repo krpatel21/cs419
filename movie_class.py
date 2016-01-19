@@ -3,6 +3,7 @@
 import os, os.path
 import sys
 
+# determines if review is good
 def isGood(text):
     words = text.split(" ")
     bad_words = 0
@@ -15,7 +16,7 @@ def isGood(text):
             bad_words = bad_words + 1
     return good_words > bad_words
 
-#main function. returns a tuple as specified in the directions
+#main function. returns a tuple as specified in d2l
 def predict(pos_data,neg_data):
     pos_files = directory(pos_data, ".txt")
     neg_files = directory(neg_data, ".txt")
@@ -53,9 +54,10 @@ def directory(path,extension):
       count += 1
   return count
 
-
+#gets the argument list
 argList = sys.argv
 
+# assume the first argument is the path for positive reviews
 pd = argList[1]
 nd = argList[2]
 
