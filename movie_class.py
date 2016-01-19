@@ -9,10 +9,10 @@ def isGood(text):
     bad_words = 0
     good_words = 0
     for word in words:
-        if word == ("good" or "excellent" or "great" or "amazing" or "like" or "love"):
+        if word == ("good" or "excellent" or "great" or "amazing" or "liked" or "like" or "loved" or "enjoyed"):
             good_words = good_words + 1
-        if word == ("bad" or "disappointing" or "disappointment" or "disappoint" or
-                        "horrible" or "sad" or "suck" or "hate"):
+        if word == ("bad" or "disappointing" or "predictable" or "plain" or "disappointment" or "disappoint" or
+                        "horrible" or "sad" or "suck" or "hate" or "boring"):
             bad_words = bad_words + 1
     return good_words > bad_words
 
@@ -39,10 +39,10 @@ def predict(pos_data,neg_data):
         if (not isGood(t)):
             neg_count = neg_count + 1
 
-    pos_avg = float(pos_count)/float(pos_files) * 100
-    neg_avg = float(neg_count)/float(neg_files) * 100
+    pos_percentage = float(pos_count)/float(pos_files) * 100
+    neg_percentage = float(neg_count)/float(neg_files) * 100
 
-    tup = (pos_avg, neg_avg)
+    tup = (pos_percentage, neg_percentage)
     return tup
 
 # counts the number of txt files in the directory
@@ -61,6 +61,5 @@ argList = sys.argv
 pd = argList[1]
 nd = argList[2]
 
-if __name__ == "__main__":
-    tup = predict(pd, nd)
-    print "Correctly classified" ,tup[0] ,"% of pos,",tup[1], "% neg"
+tup = predict(pd, nd)
+print "Correctly classified" ,tup[0] ,"% of pos,",tup[1], "% neg"
