@@ -61,10 +61,10 @@ def ent3( v1, v2, v3):
 # print ent(2, 0, 1, 1) # near
 # print ent(2, 0, 1, 0) # none
 #
-print ent(1,2)
-print ent(2,1)
-
-print (-1.0/2*math.log(1.0/2, 2)) - (1.0/4*math.log(1.0/4, 2)) -(1.0/4*math.log(1.0/4, 2))
+# print ent(1,2)
+# print ent(2,1)
+#
+# print (-1.0/2*math.log(1.0/2, 2)) - (1.0/4*math.log(1.0/4, 2)) -(1.0/4*math.log(1.0/4, 2))
 
 print ent2(5, 1, 3, 1)
 print ent2(1, 0, 2, 0)

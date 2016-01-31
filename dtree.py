@@ -115,10 +115,11 @@ def id3(examples,target,attributes): #look at page 56 of Mitchell's book
     examples_by_val = getSubsetsByValues(examples,a)
     for v,ex_sv in examples_by_val.items(): # for each possible value v of a
         if not ex_sv:
-            root[a]=most_common_value(examples,target)
+           root[a]=most_common_value(examples,target)
         else:
            dic = removekey(attributes, a)
-           root[a+1] = id3(ex_sv,target, dic)
+           root[attributes[a]][v] = id3(ex_sv,target,dic)
+
     return root
     
 def removekey(d, key):
@@ -133,9 +134,8 @@ def dtree(datafile):
     root = id3(data[1:],target,attributes) # put the ID3 tree in a root node
     pprint.pprint(root) #pprint = pretty print.
 
-# if __name__=='__main__': #this allows you to run this program from cmd line.
-#     fname = sys.argv[1]
-#     dtree(fname)
+if __name__=='__main__': #this allows you to run this program from cmd line.
+    fname = sys.argv[1]
+    dtree(fname)
 
-dtree("play_tennis.txt")
 
