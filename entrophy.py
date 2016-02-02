@@ -3,7 +3,8 @@ import math
 def ent(p, n):
     pos = float(p) / (p+n)
     neg = float(n) / (p+n)
-    return -1 * pos * math.log(pos, 2) - neg * math.log(neg, 2)
+    e = -info(pos) - info(neg)
+    return e
 
 def info(p):
     if p==0.0:
@@ -89,3 +90,11 @@ print ent3(1,3,1)- 2.0/5 * ent3(0,1,1)
 print
 print ent3(1,1,1)
 print ent3(1,3,1) - 3.0/5 * ent3(1,1,1)
+
+print ent3(1,1,1)
+print ent3(1,1,1)
+
+print
+print ent(1,1)
+print ent(1,0)
+print ent(0,2)
