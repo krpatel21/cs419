@@ -1,13 +1,12 @@
 import math
+import pylab
 
+list = [3.45, 2.78, 2.52, 3.67, 3.24]
+list2 = [1232, 1070,1086,1287,1130]
 
 def mean(x):
     s = sum(x) / float(len(x))
     return s
-
-
-list = [3.45, 2.78, 2.52, 3.67, 3.24]
-
 
 # print avg(list)
 
@@ -19,13 +18,6 @@ def sd(x):
         s += (v - a) ** 2
     std = math.sqrt(float(s) / (n - 1))
     return std
-
-
-
-
-list2 = [1232, 1070,1086,1287,1130]
-
-
 
 def r(x, y):
     std1 = sd(x)
@@ -42,7 +34,6 @@ def r(x, y):
 def slope(x, y):
     s = r(y, x) * sd(y) / sd(x)
     return s
-
 
 def yint(avgx, avgy, slope):
     y = avgy - slope * avgx
