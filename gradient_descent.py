@@ -1,21 +1,6 @@
-# import numpy as np
-#
-# x = np.array([1,2,3])
-# y = np.array([-7,8,9])
-# print np.dot(x,y)
-# # x = np.matrix(((1,3), (4, 0), (2, 1)))
-# # y = np.matrix(((1),(5)))
-#
-# x = np.matrix(((1,3,2),(4,0,1)))
-# y = np.matrix(((1,3),(0,1),(5,2)))
-# print x * y
-#
-# x = np.matrix(((1,3,2),(4,0,1)))
-# y = np.matrix('1;0;5')
-# print x * y
 import math
 
-LEARNING_RATE = 0.0002
+LEARNING_RATE = 0.1
 summer = [38, 43, 35, 69]
 fall = [75, 80, 65, 144]
 spring = [70, 70, 96, 137]
@@ -48,6 +33,37 @@ def gradient_descent(x1, x2, y, theta, theta1, theta2, iterations):
     print theta, theta1, theta2
     gradient_descent(x1, x2, y, theta, theta1, theta2, iterations-1)
 
-gradient_descent(summer, fall, spring, 0, 10, 10, 600)
+gradient_descent(summer, fall, spring, 0, 10, 10, 20)
 
-print math.pow(10, -3)
+x1 = [1, 1, 0, 0]
+x2 = [1, 0, 1, 0]
+y= [1, 0, 0, 0]
+
+
+def perceptron(x1, x2, y, weight, weight1, weight2, i):
+    if i == 4:
+        i = 0
+
+    o = 1 * weight + x1[i] * weight1 + x2[i] * weight2
+    if o > 0:
+        o = 1
+    else:
+        o = -1
+
+    delta_w = LEARNING_RATE * (y[i] - o)
+    delta_w1 = LEARNING_RATE * (y[i] - o) * x1[i]
+    delta_w2= LEARNING_RATE * (y[i] - o) * x2[i]
+
+    weight = weight + delta_w
+    weight1 = weight1 + delta_w1
+    weight2 = weight2 + delta_w2
+
+    i = i+1
+
+    print "delta w", delta_w, delta_w1, delta_w2
+    print "weights", weight, weight1, weight2
+    print
+
+    perceptron(x1, x2, y, weight, weight1,weight2, i)
+
+perceptron(x1, x2, y, 0.2, 0.1, 0.4, 0)

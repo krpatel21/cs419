@@ -98,3 +98,8 @@ print
 print ent(1,1)
 print ent(1,0)
 print ent(0,2)
+
+print ent(9, 5)
+print ent(4, 0)
+print ent(2, 2)
+print ent(1, 1)
