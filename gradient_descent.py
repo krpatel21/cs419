@@ -39,31 +39,3 @@ x1 = [1, 1, 0, 0]
 x2 = [1, 0, 1, 0]
 y= [1, 0, 0, 0]
 
-
-def perceptron(x1, x2, y, weight, weight1, weight2, i):
-    if i == 4:
-        i = 0
-
-    o = 1 * weight + x1[i] * weight1 + x2[i] * weight2
-    if o > 0:
-        o = 1
-    else:
-        o = -1
-
-    delta_w = LEARNING_RATE * (y[i] - o)
-    delta_w1 = LEARNING_RATE * (y[i] - o) * x1[i]
-    delta_w2= LEARNING_RATE * (y[i] - o) * x2[i]
-
-    weight = weight + delta_w
-    weight1 = weight1 + delta_w1
-    weight2 = weight2 + delta_w2
-
-    i = i+1
-
-    print "delta w", delta_w, delta_w1, delta_w2
-    print "weights", weight, weight1, weight2
-    print
-
-    perceptron(x1, x2, y, weight, weight1,weight2, i)
-
-perceptron(x1, x2, y, 0.2, 0.1, 0.4, 0)

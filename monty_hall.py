@@ -3,8 +3,6 @@ import random
 GOAT = 0
 CAR = 1
 
-
-
 def get_door():
     a = random.randint(0, 1)
     b = 0
