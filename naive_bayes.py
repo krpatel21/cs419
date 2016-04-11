@@ -23,7 +23,7 @@ def splitDataset(dataset, splitRatio):
     return [trainSet, copy]
 
 
-splitRatio = 0.67
+splitRatio = 0.7
 train, test = splitDataset(dataset, splitRatio)
 print 'Split {0} rows into train with {1} and test with {2}'.format(len(dataset), train, test)
 
@@ -38,9 +38,75 @@ def separateByClass(dataset):
     return separated
 
 
-separated = separateByClass(dataset)
-print('Separated instances: {0}').format(separated)
+def attributes(dataset):
+    separated_dict = {}
+    attr_list = []
+    for i in range(len(dataset[1]) - 1):
+        separated_dict[i] = []
+    for i in range(len(dataset)):
+        vector = dataset[i]
+        for j in range(len(vector) - 1):
+            if (vector[j] not in separated_dict[j]):
+                separated_dict[j].append(vector[j])
+    return separated_dict
 
+
+attribute_dict = (attributes(dataset))
+print len(attribute_dict)
+
+separated = separateByClass(train)
+
+# pprint.pprint(separated)
+keys = separated.keys()
+# print('Separated instances: {0}').format(separated)
+
+total = len(dataset)
+
+
+def classifier_prior_probalities(keys, seperated):
+    probabilities = {}
+    for k in keys:
+        probabilities[k] = len(separated[k]) / float(total), len(separated[k])
+    return probabilities
+
+
+cpp = classifier_prior_probalities(keys, separated)
+print cpp
+
+
+def frequency_table(seperated, attribute_dict, keys):
+    data = separated
+    freq = {}
+    frequency = {}
+    for k in keys:
+        freq[k] = {}
+        working_set = data[k]
+        for i in range(len(attribute_dict)):
+            frequency[i] = []
+        for i in range(len(attribute_dict)):
+            for j in range(len(attribute_dict[i])):
+                frequency[i].append(0)
+        for j in working_set:
+            for i in range(len(attribute_dict)):
+                counter = 0
+                for l in attribute_dict[i]:
+                    if j[i] == l:
+                        frequency[i][counter] += 1
+                    counter += 1
+        freq[k].update(frequency)
+    return freq
+
+
+f = frequency_table(separated, attribute_dict, keys)
+
+def likelyhood_table(f, keys, cpp):
+    for k in keys:
+        tup = cpp[k]
+        for i in f[k]:
+            for j in f[k][i]:
+                f[k][i] = j/float(tup[1])
+    return f
+pprint.pprint(likelyhood_table(f, keys, cpp))
 
 def mean(numbers):
     return sum(numbers) / float(len(numbers))
@@ -58,61 +124,11 @@ def summarize(dataset):
     return summaries
 
 
-def summarizeByClass(dataset):
-    separated = separateByClass(dataset)
-    summaries = {}
-    for classValue, instances in separated.iteritems():
-        summaries[classValue] = summarize(instances)
-    return summaries
-
-
-def calculateProbability(x, mean, stdev):
-    exponent = math.exp(-(math.pow(x - mean, 2) / (2 * math.pow(stdev, 2))))
-    return (1 / (math.sqrt(2 * math.pi) * stdev)) * exponent
-
-
-def calculateClassProbabilities(summaries, inputVector):
-    probabilities = {}
-    for classValue, classSummaries in summaries.iteritems():
-        probabilities[classValue] = 1
-        for i in range(len(classSummaries)):
-            mean, stdev = classSummaries[i]
-            x = inputVector[i]
-            probabilities[classValue] *= calculateProbability(x, mean, stdev)
-    return probabilities
-
-
-def predict(summaries, inputVector):
-    probabilities = calculateClassProbabilities(summaries, inputVector)
-    bestLabel, bestProb = None, -1
-    for classValue, probability in probabilities.iteritems():
-        if bestLabel is None or probability > bestProb:
-            bestProb = probability
-            bestLabel = classValue
-    return bestLabel
-
-
-def getPredictions(summaries, testSet):
-    predictions = []
-    for i in range(len(testSet)):
-        result = predict(summaries, testSet[i])
-        predictions.append(result)
-    return predictions
-
-
-def getAccuracy(testSet, predictions):
-    correct = 0
-    for i in range(len(testSet)):
-        if testSet[i][-1] == predictions[i]:
-            correct += 1
-    return (correct / float(len(testSet))) * 100.0
-
-
 trainingSet, testSet = splitDataset(dataset, splitRatio)
 print('Split {0} rows into train={1} and test={2} rows').format(len(dataset), len(trainingSet), len(testSet))
 # prepare model
-summaries = summarizeByClass(trainingSet)
+# summaries = summarizeByClass(trainingSet)
 # test model
-predictions = getPredictions(summaries, testSet)
-accuracy = getAccuracy(testSet, predictions)
-print('Accuracy: {0}%').format(accuracy)
+# predictions = getPredictions(summaries, testSet)
+# accuracy = getAccuracy(testSet, predictions)
+# print('Accuracy: {0}%').format(accuracy)
