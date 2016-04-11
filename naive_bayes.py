@@ -53,7 +53,7 @@ def attributes(dataset):
 
 attribute_dict = (attributes(dataset))
 print len(attribute_dict)
-
+pprint.pprint(attribute_dict)
 separated = separateByClass(train)
 
 # pprint.pprint(separated)
@@ -100,28 +100,48 @@ def frequency_table(seperated, attribute_dict, keys):
 f = frequency_table(separated, attribute_dict, keys)
 
 def likelyhood_table(f, keys, cpp):
+    llist = {}
     for k in keys:
+        llist[k] = {}
+        for i in range(len(attribute_dict)):
+            llist[i] = []
+        for i in range(len(attribute_dict)):
+            for j in range(len(attribute_dict[i])):
+                llist[i].append(0)
         tup = cpp[k]
         for i in f[k]:
             for j in f[k][i]:
-                f[k][i] = j/float(tup[1])
-    return f
-pprint.pprint(likelyhood_table(f, keys, cpp))
+                llist[k][i] = j/float(tup[1])
+    return llist
 
-def mean(numbers):
-    return sum(numbers) / float(len(numbers))
+l = likelyhood_table(f, keys, cpp)
+
+pprint.pprint(l['acc'])
+
+def calculateargmax(row, likelyhood_table, cpp, keys, attributes):
+    argmax = row[len(row)-1]
+    max_probability = 0
+    for i in range(len(row)-1):
+        probabilities = 1
+        for k in keys:
+            ptable = likelyhood_table[k]
+            ind = int(attribute_dict[i].index(row[i]))
+            plist= ptable[i]
+            probabilities *= plist[ind]
+        if (probabilities > max_probability):
+            argmax = k
+    return argmax
 
 
-def stdev(numbers):
-    avg = mean(numbers)
-    variance = sum([pow(x - avg, 2) for x in numbers]) / float(len(numbers) - 1)
-    return math.sqrt(variance)
+def test_data(test, likelyhood_table, cpp, keys, attributes):
+    data = test
+    for i in data:
+        calculateargmax(i, likelyhood_table, cpp, keys, attributes)
+        # print i
+    # pprint.pprint(data)
 
+test_data(test, l, cpp, keys, attributes)
 
-def summarize(dataset):
-    summaries = [(mean(attribute), stdev(attribute)) for attribute in zip(*dataset)]
-    del summaries[-1]
-    return summaries
 
 
 trainingSet, testSet = splitDataset(dataset, splitRatio)
