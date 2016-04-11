@@ -2,7 +2,6 @@ import pprint
 import random
 import math
 
-
 def file2list(fname):
     d = open(fname).read().split("\n")
     data = [instance.split(",") for instance in d if len(instance) > 1]
@@ -104,41 +103,58 @@ def likelyhood_table(f, keys, cpp):
     for k in keys:
         llist[k] = {}
         for i in range(len(attribute_dict)):
-            llist[i] = []
+            llist[k][i] = []
         for i in range(len(attribute_dict)):
             for j in range(len(attribute_dict[i])):
-                llist[i].append(0)
+                llist[k][i].append(0)
         tup = cpp[k]
+        working_list = llist[k]
         for i in f[k]:
             for j in f[k][i]:
-                llist[k][i] = j/float(tup[1])
+                ind =  f[k][i].index(j)
+                working_list[i][ind] = j/float(tup[1])
     return llist
 
 l = likelyhood_table(f, keys, cpp)
 
-pprint.pprint(l['acc'])
+pprint.pprint(l)
 
 def calculateargmax(row, likelyhood_table, cpp, keys, attributes):
     argmax = row[len(row)-1]
     max_probability = 0
+    fp = 0
     for i in range(len(row)-1):
         probabilities = 1
         for k in keys:
+            tup = cpp[k]
             ptable = likelyhood_table[k]
             ind = int(attribute_dict[i].index(row[i]))
             plist= ptable[i]
-            probabilities *= plist[ind]
-        if (probabilities > max_probability):
-            argmax = k
+            if plist[ind] != 0 or plist[ind] != 0.0:
+                probabilities *= plist[ind]
+            else:
+                probabilities *= 0.00001
+            if i == 5:
+                fp = probabilities * tup[0]
+            if (fp > max_probability):
+                max_probability = fp
+                argmax = k
     return argmax
 
 
 def test_data(test, likelyhood_table, cpp, keys, attributes):
+    correct = 0
+    incorrect = 0
     data = test
     for i in data:
-        calculateargmax(i, likelyhood_table, cpp, keys, attributes)
-        # print i
-    # pprint.pprint(data)
+        argmax = calculateargmax(i, likelyhood_table, cpp, keys, attributes)
+        if argmax == i[6]:
+            correct +=1
+        else:
+            incorrect +=1
+    percent_correct = correct / float(correct+incorrect) *100
+    print percent_correct
+
 
 test_data(test, l, cpp, keys, attributes)
 
