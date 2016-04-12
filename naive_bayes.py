@@ -123,9 +123,9 @@ def calculateargmax(row, likelyhood_table, cpp, keys, attributes):
     argmax = row[len(row)-1]
     max_probability = 0
     fp = 0
-    for i in range(len(row)-1):
+    for k in keys:
         probabilities = 1
-        for k in keys:
+        for i in range(len(row) - 1):
             tup = cpp[k]
             ptable = likelyhood_table[k]
             ind = int(attribute_dict[i].index(row[i]))
