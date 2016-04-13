@@ -2,13 +2,13 @@ import pprint
 import random
 import math
 
+
 def file2list(fname):
     d = open(fname).read().split("\n")
     data = [instance.split(",") for instance in d if len(instance) > 1]
     return data
 
 
-# pprint.pprint(file2list("car.data.txt"))
 dataset = file2list("car.data.txt")
 
 
@@ -52,9 +52,7 @@ def attributes(dataset):
 attribute_dict = (attributes(dataset))
 separated = separateByClass(train)
 
-# pprint.pprint(separated)
 keys = separated.keys()
-# print('Separated instances: {0}').format(separated)
 
 total = len(dataset)
 
@@ -93,6 +91,8 @@ def frequency_table(seperated, attribute_dict, keys):
 
 
 f = frequency_table(separated, attribute_dict, keys)
+
+
 def likelyhood_table(f, keys, cpp):
     llist = {}
     for k in keys:
@@ -106,15 +106,16 @@ def likelyhood_table(f, keys, cpp):
         working_list = llist[k]
         for i in f[k]:
             for j in f[k][i]:
-                ind =  f[k][i].index(j)
-                working_list[i][ind] = j/float(tup[1])
+                ind = f[k][i].index(j)
+                working_list[i][ind] = j / float(tup[1])
     return llist
+
 
 l = likelyhood_table(f, keys, cpp)
 
 
 def calculateargmax(row, likelyhood_table, cpp, keys, attributes):
-    argmax = row[len(row)-1]
+    argmax = row[len(row) - 1]
     max_probability = 0
     fp = 0
     for k in keys:
@@ -123,7 +124,7 @@ def calculateargmax(row, likelyhood_table, cpp, keys, attributes):
             tup = cpp[k]
             ptable = likelyhood_table[k]
             ind = int(attribute_dict[i].index(row[i]))
-            plist= ptable[i]
+            plist = ptable[i]
             if plist[ind] != 0 or plist[ind] != 0.0:
                 probabilities *= plist[ind]
             else:
@@ -143,22 +144,13 @@ def test_data(test, likelyhood_table, cpp, keys, attributes):
     for i in data:
         argmax = calculateargmax(i, likelyhood_table, cpp, keys, attributes)
         if argmax == i[6]:
-            correct +=1
+            correct += 1
         else:
-            incorrect +=1
-    percent_correct = correct / float(correct+incorrect) *100
+            incorrect += 1
+    percent_correct = correct / float(correct + incorrect) * 100
     return percent_correct
-
-
-
 
 
 print "Total Examples for training:", len(train)
 print "Total Examples for testing:", len(test)
-print "Percent correct:", test_data(test, l, cpp, keys, attributes),"%"
-# prepare model
-# summaries = summarizeByClass(trainingSet)
-# test model
-# predictions = getPredictions(summaries, testSet)
-# accuracy = getAccuracy(testSet, predictions)
-# print('Accuracy: {0}%').format(accuracy)
+print "Percent correct:", test_data(test, l, cpp, keys, attributes), "%"
