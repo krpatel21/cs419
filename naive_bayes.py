@@ -24,7 +24,6 @@ def splitDataset(dataset, splitRatio):
 
 splitRatio = 0.7
 train, test = splitDataset(dataset, splitRatio)
-print 'Split {0} rows into train with {1} and test with {2}'.format(len(dataset), train, test)
 
 
 def separateByClass(dataset):
@@ -51,8 +50,6 @@ def attributes(dataset):
 
 
 attribute_dict = (attributes(dataset))
-print len(attribute_dict)
-pprint.pprint(attribute_dict)
 separated = separateByClass(train)
 
 # pprint.pprint(separated)
@@ -70,7 +67,6 @@ def classifier_prior_probalities(keys, seperated):
 
 
 cpp = classifier_prior_probalities(keys, separated)
-print cpp
 
 
 def frequency_table(seperated, attribute_dict, keys):
@@ -97,7 +93,6 @@ def frequency_table(seperated, attribute_dict, keys):
 
 
 f = frequency_table(separated, attribute_dict, keys)
-
 def likelyhood_table(f, keys, cpp):
     llist = {}
     for k in keys:
@@ -117,7 +112,6 @@ def likelyhood_table(f, keys, cpp):
 
 l = likelyhood_table(f, keys, cpp)
 
-pprint.pprint(l)
 
 def calculateargmax(row, likelyhood_table, cpp, keys, attributes):
     argmax = row[len(row)-1]
@@ -153,15 +147,15 @@ def test_data(test, likelyhood_table, cpp, keys, attributes):
         else:
             incorrect +=1
     percent_correct = correct / float(correct+incorrect) *100
-    print percent_correct
-
-
-test_data(test, l, cpp, keys, attributes)
+    return percent_correct
 
 
 
-trainingSet, testSet = splitDataset(dataset, splitRatio)
-print('Split {0} rows into train={1} and test={2} rows').format(len(dataset), len(trainingSet), len(testSet))
+
+
+print "Total Examples for training:", len(train)
+print "Total Examples for testing:", len(test)
+print "Percent correct:", test_data(test, l, cpp, keys, attributes),"%"
 # prepare model
 # summaries = summarizeByClass(trainingSet)
 # test model
